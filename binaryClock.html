@@ -195,9 +195,9 @@
 		BinaryClock.prototype.renderColumn = function(node, state) {
 			var elements = node.getElementsByTagName('li');
 			this.states[state].forEach((function(el, index) {
-				elements[3-el].classList.add(this.activeClass);
+				elements[3 - el].classList.add(this.activeClass);
 			}).bind(this));
-			node.querySelector('.value').innerText = state;
+			node.querySelector('.value').textContent = state;
 		};
 
 		globalScope.binaryClock = new BinaryClock();
