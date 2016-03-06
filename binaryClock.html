@@ -170,12 +170,11 @@
 		}
 
 		BinaryClock.prototype.reset = function() {
-			var _this = this;
-			[this.nodeHours, this.nodeMinutes, this.nodeSeconds].forEach(function(node, index) {
-				[].forEach.call(node.getElementsByTagName('li'), function(el, index) {
-					el.classList.remove(_this.activeClass);
-				});
-			});
+			[this.nodeHours, this.nodeMinutes, this.nodeSeconds].forEach((function(node, index) {
+				[].forEach.call(node.getElementsByTagName('li'), (function(el, index) {
+					el.classList.remove(this.activeClass);
+				}).bind(this));
+			}).bind(this));
 		}
 
 		BinaryClock.prototype.render = function() {
@@ -187,19 +186,17 @@
 		};
 
 		BinaryClock.prototype.renderGroup = function(node, state) {
-			var _this = this;
-			state = ('0'+state).slice(-2);
-			[].forEach.call(node.getElementsByTagName('ul'), function(el, index) {
-				_this.renderColumn(el, state[index]);
-			});
+			state = ('0' + state).slice(-2);
+			[].forEach.call(node.getElementsByTagName('ul') ,(function(el, index) {
+				this.renderColumn(el, state[index]);
+			}).bind(this));
 		};
 
 		BinaryClock.prototype.renderColumn = function(node, state) {
-			var _this = this;
 			var elements = node.getElementsByTagName('li');
-			this.states[state].forEach(function(el, index) {
-				elements[3-el].classList.add(_this.activeClass);
-			});
+			this.states[state].forEach((function(el, index) {
+				elements[3-el].classList.add(this.activeClass);
+			}).bind(this));
 			node.querySelector('.value').innerText = state;
 		};
 
