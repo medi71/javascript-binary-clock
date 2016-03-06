@@ -3,20 +3,37 @@
 <head>
 	<meta charset="utf-8">
 	<title>Javascript Binary Clock</title>
+	<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
 	<style type="text/css">
 		body {
-			background-color: #999;
+			background-color: #535A6C;
+			color: #FFFFFF;
+			font-family: 'Montserrat', sans-serif;
+			text-shadow: 1px 1px 0 #000000;
+		}
+
+		.text-green {
+			color: #26BCB5;
 		}
 
 		section#clock {
 			position: absolute;
-			width: 416px;
-			height: 151px;
+			width: 418px;
+			height: 270px;
 			top: 0;
 			right: 0;
 			bottom: 0;
 			left: 0;
 			margin: auto auto;
+			text-align: center;
+			background-color: #22354A;
+			padding: 20px 60px;
+			border-radius: 5px;
+			box-shadow: 2px 2px 0 0 rgba(255,255,255,.1);
+		}
+
+		section#clock h2 {
+			font-size: 22px;
 		}
 
 		#hours, #minutes, #seconds {
@@ -24,6 +41,7 @@
 			border: 1px solid #cdcdcd;
 			background-color: #fff;
 			padding: 0 15px;
+			border-radius: 3px;
 		}
 
 		ul:nth-child(1) li:nth-child(1), 
@@ -41,7 +59,8 @@
 
 		ul li.value {
 			position: absolute;
-			bottom: -30px;
+			font-size: 20px;
+			bottom: -33px;
 			left: 0;
 			width: 50px;
 			text-align: center;
@@ -54,16 +73,26 @@
 			background-color: #cdcdcd;
 			border-radius: 50%;
 			margin: 5px;
+			box-shadow:inset 1px 1px 0 0 rgba(0,0,0,.1);
 		}
 
-		ul li.active {
-			background-color: #000;
+		#hours ul li:not(.value).active {
+			background-color: #FFC30C;
+		}
+
+		#minutes ul li:not(.value).active {
+			background-color: #CFD48B;
+		}
+
+		#seconds ul li:not(.value).active {
+			background-color: #EE836E;
 		}
 	</style>
 </head>
 <body>
 
 <section id="clock">
+	<h2>Binary clock written with <span class="text-green">Vanilla JS</span></h2>
 	<div id="hours">
 		<ul>
 			<li></li>
@@ -114,70 +143,70 @@
 	</div>
 </section>
 
-	<script type="text/javascript">
-		(function(globalScope) {
-			`use strict`;
+<script type="text/javascript">
+	(function(globalScope) {
+		`use strict`;
 
-			function BinaryClock() {
-				this.activeClass = 'active';
-				this.nodeHours = document.getElementById('hours');
-				this.nodeMinutes = document.getElementById('minutes');
-				this.nodeSeconds = document.getElementById('seconds');
+		function BinaryClock() {
+			this.activeClass = 'active';
+			this.nodeHours = document.getElementById('hours');
+			this.nodeMinutes = document.getElementById('minutes');
+			this.nodeSeconds = document.getElementById('seconds');
 
-				this.states = {
-					0: [],
-					1: [0],
-					2: [1],
-					3: [0,1],
-					4: [2],
-					5: [0,2],
-					6: [1,2],
-					7: [0,1,2],
-					8: [3],
-					9: [0,3]
-				};
-
-				this.render();
-			}
-
-			BinaryClock.prototype.reset = function() {
-				var _this = this;
-				[this.nodeHours, this.nodeMinutes, this.nodeSeconds].forEach(function(node, index) {
-					[].forEach.call(node.getElementsByTagName('li'), function(el, index) {
-						el.classList.remove(_this.activeClass);
-					});
-				});
-			}
-
-			BinaryClock.prototype.render = function() {
-				this.reset();
-				var time = new Date();
-				this.renderGroup(this.nodeHours, time.getHours());
-				this.renderGroup(this.nodeMinutes, time.getMinutes());
-				this.renderGroup(this.nodeSeconds, time.getSeconds());
+			this.states = {
+				0: [],
+				1: [0],
+				2: [1],
+				3: [0,1],
+				4: [2],
+				5: [0,2],
+				6: [1,2],
+				7: [0,1,2],
+				8: [3],
+				9: [0,3]
 			};
 
-			BinaryClock.prototype.renderGroup = function(node, state) {
-				var _this = this;
-				state = ('0'+state).slice(-2);
-				[].forEach.call(node.getElementsByTagName('ul'), function(el, index) {
-					_this.renderColumn(el, state[index]);
+			this.render();
+		}
+
+		BinaryClock.prototype.reset = function() {
+			var _this = this;
+			[this.nodeHours, this.nodeMinutes, this.nodeSeconds].forEach(function(node, index) {
+				[].forEach.call(node.getElementsByTagName('li'), function(el, index) {
+					el.classList.remove(_this.activeClass);
 				});
-			};
+			});
+		}
 
-			BinaryClock.prototype.renderColumn = function(node, state) {
-				var _this = this;
-				var elements = node.getElementsByTagName('li');
-				this.states[state].forEach(function(el, index) {
-					elements[3-el].classList.add(_this.activeClass);
-				});
-				node.querySelector('.value').innerText = state;
-			};
+		BinaryClock.prototype.render = function() {
+			this.reset();
+			var time = new Date();
+			this.renderGroup(this.nodeHours, time.getHours());
+			this.renderGroup(this.nodeMinutes, time.getMinutes());
+			this.renderGroup(this.nodeSeconds, time.getSeconds());
+		};
 
-			globalScope.binaryClock = new BinaryClock();
+		BinaryClock.prototype.renderGroup = function(node, state) {
+			var _this = this;
+			state = ('0'+state).slice(-2);
+			[].forEach.call(node.getElementsByTagName('ul'), function(el, index) {
+				_this.renderColumn(el, state[index]);
+			});
+		};
 
-		})(window);
-		setInterval(window.binaryClock.render.bind(window.binaryClock), 1000);
-	</script>
+		BinaryClock.prototype.renderColumn = function(node, state) {
+			var _this = this;
+			var elements = node.getElementsByTagName('li');
+			this.states[state].forEach(function(el, index) {
+				elements[3-el].classList.add(_this.activeClass);
+			});
+			node.querySelector('.value').innerText = state;
+		};
+
+		globalScope.binaryClock = new BinaryClock();
+
+	})(window);
+	setInterval(window.binaryClock.render.bind(window.binaryClock), 1000);
+</script>
 </body>
 </html>
