@@ -2,6 +2,6 @@
 
 Binary clock written with Vanilla JS
 
-![alt tag](http://medynski.info/binaryClock.png)
+<img src="http://medynski.info/binaryClock.png" width="444" height="278">
 
 ##### Live demo: http://medynski.info/binaryClock.html
