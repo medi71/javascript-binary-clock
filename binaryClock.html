@@ -33,15 +33,26 @@
 		}
 
 		section#clock h2 {
-			font-size: 22px;
+			font-size: 20px;
 		}
 
 		#hours, #minutes, #seconds {
+			position: relative;
 			display: inline-block;
 			border: 1px solid #cdcdcd;
 			background-color: #fff;
 			padding: 0 15px;
 			border-radius: 3px;
+		}
+
+		#hours:after,
+		#minutes:after {
+			position: absolute;
+			bottom: -27px;
+			right: -6px;
+			content: ':';
+			font-size: 20px;
+			opacity: .3;
 		}
 
 		ul:nth-child(1) li:nth-child(1), 
